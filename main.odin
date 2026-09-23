@@ -23,8 +23,6 @@ WORLD_MAP : [10][10]int : {
                            }
 
 
-
-
 main::proc() {
     graph_lib.InitWindow(WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, WINDOW_TITLE)
 
