@@ -1,25 +1,27 @@
 package map_manager
 import graph_lib "vendor:raylib"
 
-OVERALL_PIXEL_SIZE : i32 : 64
+OVERALL_PIXEL_SIZE : u8 : 64
 
 
-Vector2i :: struct {
-	x , y : i32,
+Dimension :: struct {
+	length , width : u8,
+}
+
+Tile :: struct {
+    has_texture : bool,
+    texture_path : cstring,
+    color : graph_lib.Color,
+    obj : graph_lib.Rectangle,
+    symbol : u8
 }
 
 Map :: struct {
-    pixel_size : Vector2i,
-    tile : struct {
-        has_texture : bool,
-        texture_path : cstring,
-        color : graph_lib.Color,
-        obj : graph_lib.Rectangle
-    },
-
+    pixel_size : Dimension,
+    tile_size : Dimension,
     mini_map : struct {
-        map_rep : [tile_size.x][tile_size.y]int,
+        map_representation : [][]u8,
         diff_tiles_num : i32,
-        diff_tiles : [diff_tiles_num]tile,
+        diff_tiles : []Tile,
     }
 }
