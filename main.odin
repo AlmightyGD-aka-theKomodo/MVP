@@ -15,9 +15,10 @@ draw_centered_minimap :: proc(map_to_draw : ^map_manager.Map) {
      else {
     	mini_tile_size : u16 = 64;
 	    start_tile_position : map_manager.Position = map_manager.Position{
-						                            u16(graph_lib.GetScreenWidth() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.col) / 2,
-                                                    u16(graph_lib.GetScreenHeight() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.row) / 2}
-        //defer map_to_draw.mini_map.is_lazy_drawing_enable = true
+						                            u16(graph_lib.GetScreenWidth() / 2) -
+												    (mini_tile_size * (map_to_draw.mini_map.tile_size.col + (map_to_draw.mini_map.tile_size.col %% 2))) / 2,
+                                                    u16(graph_lib.GetScreenHeight() / 2) -
+                                                    (mini_tile_size * (map_to_draw.mini_map.tile_size.row + (map_to_draw.mini_map.tile_size.row %% 2))) / 2}
         tile_position :=  start_tile_position
         for i : u16 = 0;  i < u16(len(map_to_draw.mini_map.map_representation)); i += u16(1) {
             if map_manager.convert_one_row_to_tile(i32(i), map_to_draw).x == 0 do tile_position.x = start_tile_position.x
@@ -36,8 +37,9 @@ main::proc() {
 	                            mini_map = {map_representation = []u8 {0..=10 = 0, 11..=18 = 1,
 																		19..=20 = 0, 21..=28 = 1, 29..=30 = 0,
 																		31..=38 = 1, 39..=40 = 0, 41..=48 = 1,
-																	49 = 0}, diff_tiles_num = 2,
-																    tile_size = map_manager.Dimension{10, 10},
+																	49 = 0},
+																	diff_tiles_num = 2,
+																    tile_size = map_manager.Dimension{10, 5},
 																	is_centered = true,
 																	is_lazy_drawing_enable = false}}
     player_manager := players_monitor.Player_Manager {
