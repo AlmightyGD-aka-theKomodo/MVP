@@ -40,6 +40,10 @@ convert_tile_to_pixel :: proc(pos_in_tile : Position) -> Position {
 	return Position{pos_in_tile.x * OVERALL_PIXEL_SIZE, pos_in_tile.y * OVERALL_PIXEL_SIZE}
 }
 
+convert_one_row_to_tile :: proc(index : i32, map_to_modify : ^Map) -> Position {
+	return Position{u16(index) %% map_to_modify.mini_map.tile_size.col, u16(index) / map_to_modify.mini_map.tile_size.col}
+}
+
 set_tilemap :: proc(index : Position, value : u8, map_to_modify : ^Map) -> bool {
 	if index.x > map_to_modify.mini_map.tile_size.col - 1 || index.y > map_to_modify.mini_map.tile_size.row - 1 {
 		return false

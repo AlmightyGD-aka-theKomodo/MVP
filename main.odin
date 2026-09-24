@@ -2,7 +2,7 @@ package main
 import "core:fmt"
 import graph_lib "vendor:raylib"
 import map_manager "coordinates-manager"
-import players_monitor "player_manager"
+import players_monitor "player-manager"
 
 WINDOW_SIZE_HEIGHT : i32 : 1080
 WINDOW_SIZE_WIDTH : i32 : 1920
@@ -11,20 +11,21 @@ WINDOW_TITLE : cstring : "MVP graphical engine"
 PLAYER_TILE: u8 : 2
 
 draw_centered_minimap :: proc(map_to_draw : ^map_manager.Map) {
-	mini_tile_size : u16 = 64;
-	tile_position : map_manager.Position = map_manager.Position{u16(graph_lib.GetScreenWidth() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.col) / 2,
-                                                                u16(graph_lib.GetScreenHeight() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.row) / 2}
    if map_to_draw.mini_map.is_lazy_drawing_enable == true do return
      else {
+    	mini_tile_size : u16 = 64;
+	    start_tile_position : map_manager.Position = map_manager.Position{
+						                            u16(graph_lib.GetScreenWidth() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.col) / 2,
+                                                    u16(graph_lib.GetScreenHeight() / 2) - (mini_tile_size * map_to_draw.mini_map.tile_size.row) / 2}
         //defer map_to_draw.mini_map.is_lazy_drawing_enable = true
+        tile_position :=  start_tile_position
         for i : u16 = 0;  i < u16(len(map_to_draw.mini_map.map_representation)); i += u16(1) {
-            tile_position.x += (i != 0 && i != u16(len(map_to_draw.mini_map.map_representation))) ? mini_tile_size : 0
-            tile_position.y += (i % map_to_draw.mini_map.tile_size.row != 0) ? 0 : mini_tile_size
-            graph_lib.DrawRectangle(i32(tile_position.x),
-                                    i32(tile_position.y),
-                                    i32(mini_tile_size),
-                                    i32(mini_tile_size),
-                                    graph_lib.GOLD)
+            if map_manager.convert_one_row_to_tile(i32(i), map_to_draw).x == 0 do tile_position.x = start_tile_position.x
+            else do tile_position.x += mini_tile_size
+            if map_manager.convert_one_row_to_tile(i32(i),map_to_draw).x == 0 && i != 0 do tile_position.y += mini_tile_size
+            on_fly_rect : graph_lib.Rectangle = graph_lib.Rectangle{f32(tile_position.x), f32(tile_position.y), f32(mini_tile_size), f32(mini_tile_size)}
+            graph_lib.DrawRectangleRec(on_fly_rect, graph_lib.GOLD)
+            graph_lib.DrawRectangleLinesEx(on_fly_rect, 1, graph_lib.YELLOW)
         }
     }
 }
@@ -39,7 +40,7 @@ main::proc() {
 																    tile_size = map_manager.Dimension{10, 10},
 																	is_centered = true,
 																	is_lazy_drawing_enable = false}}
-    player_manager := players_monitor.Player_Manager {
+    /*player_manager := players_monitor.Player_Manager {
                                                         players = []players_monitor.Player{}, next_id = 0
                                                     }
     players_monitor.add_player(&player_manager, "Player Fredsk", graph_lib.Vector2{100, 100})
@@ -50,6 +51,7 @@ main::proc() {
         PLAYER_TILE,
         &beta_map,
     )
+    */
     graph_lib.InitWindow(WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, WINDOW_TITLE)
     defer graph_lib.CloseWindow()
     graph_lib.SetTargetFPS(GAME_FPS)
