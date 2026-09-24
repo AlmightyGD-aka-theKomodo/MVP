@@ -20,7 +20,7 @@ Player :: struct {
 }
 
 Player_Manager :: struct {
-    players: [dynamic]Player,
+    players: [dynamic ; 4]Player,
     next_id: int,
 }
 
@@ -78,8 +78,4 @@ get_player_by_id :: proc(manager: ^Player_Manager, id: int) -> ^Player {
     }
 
     return nil
-}
-
-delete_player_manager :: proc(manager : ^Player_Manager) {
-	delete(manager.players)
 }

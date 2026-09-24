@@ -40,8 +40,9 @@ main::proc() {
 																    tile_size = map_manager.Dimension{10, 10},
 																	is_centered = true,
 																	is_lazy_drawing_enable = false}}
-    /*player_manager := players_monitor.Player_Manager {
-                                                        players = []players_monitor.Player{}, next_id = 0
+    player_manager := players_monitor.Player_Manager {
+                                                        players = [dynamic; 4]players_monitor.Player{},
+                                                        next_id = 0
                                                     }
     players_monitor.add_player(&player_manager, "Player Fredsk", graph_lib.Vector2{100, 100})
 
@@ -51,7 +52,6 @@ main::proc() {
         PLAYER_TILE,
         &beta_map,
     )
-    */
     graph_lib.InitWindow(WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, WINDOW_TITLE)
     defer graph_lib.CloseWindow()
     graph_lib.SetTargetFPS(GAME_FPS)
