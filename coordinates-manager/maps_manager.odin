@@ -27,6 +27,7 @@ Map :: struct {
         diff_tiles_num : u8,
         diff_tiles : []Tile,
         is_centered : bool,
+        is_lazy_drawing_enable : bool,
         tile_size : Dimension,
     }
 }
@@ -35,7 +36,7 @@ convert_pixel_to_tile :: proc(pos_in_pixel : Position) -> Position {
 	return Position{pos_in_pixel.x / OVERALL_PIXEL_SIZE, pos_in_pixel.y / OVERALL_PIXEL_SIZE}
 }
 
-convert_pixel_to_size :: proc(pos_in_tile : Position) -> Position {
+convert_tile_to_pixel :: proc(pos_in_tile : Position) -> Position {
 	return Position{pos_in_tile.x * OVERALL_PIXEL_SIZE, pos_in_tile.y * OVERALL_PIXEL_SIZE}
 }
 
@@ -51,4 +52,9 @@ set_tilemap :: proc(index : Position, value : u8, map_to_modify : ^Map) -> bool 
 get_tilemap :: proc(index : Position, map_to_check : ^Map) -> i16 {
     if index.x > map_to_check.mini_map.tile_size.col - 1 || index.y > map_to_check.mini_map.tile_size.row - 1 do return -1
     else do return i16(map_to_check.mini_map.map_representation[index.y * map_to_check.mini_map.tile_size.col + index.x])
+}
+
+add_u16_to_position :: proc (to_add : u16, position : ^Position) {
+	position.x += to_add
+    position.y += to_add
 }
