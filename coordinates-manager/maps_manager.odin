@@ -2,7 +2,7 @@ package map_manager
 import graph_lib "vendor:raylib"
 
 OVERALL_PIXEL_SIZE : u16 : 64
-
+CENTERED_MINI_TILE_SIZE : u16 : 32
 
 Dimension :: struct {
     col , row : u16,
@@ -13,21 +13,17 @@ Position :: struct {
 }
 
 Tile :: struct {
-    has_texture : bool,
     texture_path : cstring,
     color : graph_lib.Color,
-    obj : graph_lib.Rectangle,
-    symbol : u8
+    obj : rawptr,
 }
 
 Map :: struct {
     pixel_size : Dimension,
+    tiles_infos : map[u8]Tile,
     mini_map : struct {
         map_representation : []u8,
-        diff_tiles_num : u8,
-        diff_tiles : []Tile,
         is_centered : bool,
-        is_lazy_drawing_enable : bool,
         tile_size : Dimension,
     }
 }
@@ -61,4 +57,11 @@ get_tilemap :: proc(index : Position, map_to_check : ^Map) -> i16 {
 add_u16_to_position :: proc (to_add : u16, position : ^Position) {
 	position.x += to_add
     position.y += to_add
+}
+
+get_minimap_centered_origin :: proc(map_to_draw: ^Map) -> Position {
+    return {
+    	u16(graph_lib.GetScreenWidth() / 2) -  ((CENTERED_MINI_TILE_SIZE * map_to_draw.mini_map.tile_size.col) / 2),
+    	u16(graph_lib.GetScreenHeight() / 2) - ((CENTERED_MINI_TILE_SIZE * map_to_draw.mini_map.tile_size.row) / 2)
+    }
 }

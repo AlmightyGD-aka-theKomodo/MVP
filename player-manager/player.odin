@@ -6,6 +6,18 @@ Player_State :: enum {
     Dead,
 }
 
+Different_Player_Speed :: enum {
+	Walk = 25,
+	Run = 50,
+}
+
+Different_Player_Direction :: enum {
+	Right = 1,
+	Left = -1,
+	Forward = 1,
+	Backward = -1,
+}
+
 Player :: struct {
     id: int,
     name: string,
@@ -51,10 +63,9 @@ remove_player :: proc(manager: ^Player_Manager, player_id: int) {
     }
 }
 
-move_player :: proc(player: ^Player, direction: graph_lib.Vector2, speed: f32) {
-    player.velocity = direction
-    player.position.x += direction.x * speed
-    player.position.y += direction.y * speed
+move_player :: proc(player: ^Player, direction: [2]Different_Player_Direction, speed : Different_Player_Speed) {
+	player.velocity = {f32(direction[0]) * f32(speed), f32(direction[1]) * f32(speed)}
+    player.position = player.position + player.velocity * graph_lib.GetFrameTime()
 }
 
 damage_player :: proc(player: ^Player, damage: int) {
@@ -76,6 +87,5 @@ get_player_by_id :: proc(manager: ^Player_Manager, id: int) -> ^Player {
             return &manager.players[i]
         }
     }
-
     return nil
 }
