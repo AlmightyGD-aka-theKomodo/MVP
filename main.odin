@@ -36,7 +36,12 @@ draw_player_on_centered_minimap :: proc(m: ^map_manager.Map, player: ^players_mo
     origin : map_manager.Position = map_manager.get_minimap_centered_origin(m)
 	player_origin := map_manager.Position{origin.x + map_manager.CENTERED_MINI_TILE_SIZE * player_tile.x,
                                           origin.y + map_manager.CENTERED_MINI_TILE_SIZE * player_tile.y}
-    graph_lib.DrawCircleV([2]f32{f32(player_origin.x) + center_player_on_tile, f32(player_origin.y) + center_player_on_tile}, center_player_on_tile - 6, graph_lib.RED)
+    graph_lib.DrawCircleV(utils.get_conventional_center_of_a_rectangle(graph_lib.Rectangle{f32(player_origin.x),
+		                                                                                   f32(player_origin.y),
+                                                                                           f32(map_manager.CENTERED_MINI_TILE_SIZE),
+                                                                                           f32(map_manager.CENTERED_MINI_TILE_SIZE)}),
+                                center_player_on_tile - 6,
+                                graph_lib.RED)
 }
 
 main::proc() {
