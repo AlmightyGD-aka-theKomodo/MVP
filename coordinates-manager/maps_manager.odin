@@ -41,7 +41,7 @@ convert_one_row_to_tile :: proc(index : i32, map_to_modify : ^Map) -> Position {
 }
 
 convert_tile_to_one_row :: proc(pos_in_tile : Position, map_to_modify : ^Map) -> i32 {
-	return pos_in_tile.y * map_to_modify.mini_map.tile_size.col + pos_in_tile.x
+	return i32(pos_in_tile.y * map_to_modify.mini_map.tile_size.col + pos_in_tile.x)
 }
 
 set_tilemap :: proc(index : Position, value : u8, map_to_modify : ^Map) -> bool {

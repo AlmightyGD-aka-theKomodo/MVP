@@ -30,7 +30,7 @@ player_center_tile :: proc(p: ^players_monitor.Player) -> map_manager.Position {
     })
 }
 
-player_move :: proc(m: ^map_manager.Map, p: ^players_monitor.Player, direction: graph_lib.Vector2, dt: f32) {
+/*player_move :: proc(m: ^map_manager.Map, p: ^players_monitor.Player, direction: graph_lib.Vector2, dt: f32) {
     if direction.x == 0 && direction.y == 0 {
         p.velocity = {0, 0}
         return
@@ -53,6 +53,7 @@ player_move :: proc(m: ^map_manager.Map, p: ^players_monitor.Player, direction: 
         map_manager.set_tilemap(new_tile, PLAYER_TILE, m)
     }
 }
+*/
 
 get_conventional_center_of_a_rectangle :: proc(rectangle : graph_lib.Rectangle) -> graph_lib.Vector2 {
     return graph_lib.Vector2{rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2}
