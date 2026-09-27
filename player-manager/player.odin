@@ -1,5 +1,6 @@
 package player_manager
 import graph_lib "vendor:raylib"
+import maps_manager "../coordinates-manager"
 
 Player_State :: enum {
     Alive,
@@ -11,7 +12,7 @@ Different_Player_Speed :: enum {
 	Run = 50,
 }
 
-Different_Player_Direction :: enum {
+Different_Direction_Composite :: enum {
 	Right = 1,
 	Left = -1,
 	Forward = 1,
@@ -51,7 +52,6 @@ add_player :: proc(manager: ^Player_Manager, name: string, position: graph_lib.V
     }
     append(&manager.players , player)
     manager.next_id += 1
-    return
 }
 
 remove_player :: proc(manager: ^Player_Manager, player_id: int) {
@@ -63,18 +63,17 @@ remove_player :: proc(manager: ^Player_Manager, player_id: int) {
     }
 }
 
-move_player :: proc(player: ^Player, direction: [2]Different_Player_Direction, speed : Different_Player_Speed) {
-	player.velocity = {f32(direction[0]) * f32(speed), f32(direction[1]) * f32(speed)}
+
+
+/*move_player :: proc(player: ^Player, direction: [2]Different_Direction_Composite, speed : Different_Player_Speed) {
+	normalized_direction : [2]f32 = graph_lib.Vector2Normalize({f32(direction[0]) , f32(direction[1])})
+	player.velocity = {normalized_direction[0] * f32(speed), normalized_direction[1] * f32(speed)}
     player.position = player.position + player.velocity * graph_lib.GetFrameTime()
-}
+    }*/
 
 damage_player :: proc(player: ^Player, damage: int) {
-	if player.state == .Dead {
-        return
-	}
-
+	if player.state == .Dead do return
     player.hp -= damage
-
     if player.hp <= 0 {
         player.hp = 0
         player.state = .Dead

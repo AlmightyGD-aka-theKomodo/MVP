@@ -1,7 +1,7 @@
 package player_action
 import graph_lib "vendor:raylib"
-import map_manager "coordinates-manager"
-import players_monitor "player_manager"
+import map_manager "../coordinates-manager"
+import players_monitor "../player-manager"
 import "core:math"
 
 PLAYER_SIZE : f32 : 32
@@ -32,24 +32,28 @@ player_center_tile :: proc(p: ^players_monitor.Player) -> map_manager.Position {
 
 player_move :: proc(m: ^map_manager.Map, p: ^players_monitor.Player, direction: graph_lib.Vector2, dt: f32) {
     if direction.x == 0 && direction.y == 0 {
-        p.velocity = {}
+        p.velocity = {0, 0}
         return
     }
-    dir := graph_lib.Vector2Normalize(direction)
+    normalized_dir := graph_lib.Vector2Normalize(direction)
     step := PLAYER_SPEED * dt
     old_tile := player_center_tile(p)
 
     next_x := p.position.x + dir.x * step
-    if can_stand_at(m, next_x, p.position.y) do p.position.x = next_x
-
     next_y := p.position.y + dir.y * step
-    if can_stand_at(m, p.position.x, next_y) do p.position.y = next_y
-
     p.velocity = dir * PLAYER_SPEED
+    //if can_stand_at(m, next_x, p.position.y) do p.position.x = next_x
+    //if can_stand_at(m, p.position.x, next_y) do p.position.y = next_y
+
+
 
     new_tile := player_center_tile(p)
     if new_tile != old_tile {
         map_manager.set_tilemap(old_tile, 0, m)
         map_manager.set_tilemap(new_tile, PLAYER_TILE, m)
     }
+}
+
+get_conventional_center_of_a_rectangle :: proc(rectangle : graph_lib.Rectangle) -> graph_lib.Vector2 {
+
 }
