@@ -55,5 +55,5 @@ player_move :: proc(m: ^map_manager.Map, p: ^players_monitor.Player, direction: 
 }
 
 get_conventional_center_of_a_rectangle :: proc(rectangle : graph_lib.Rectangle) -> graph_lib.Vector2 {
-
+    return graph_lib.Vector2{rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2}
 }
